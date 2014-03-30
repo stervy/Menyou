@@ -1,0 +1,37 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+ 
+    <!-- Album id / Hidden by default -->
+    <TextView
+        android:id="@+id/album_id"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+    
+    <!-- Album Name -->
+    <TextView
+        android:id="@+id/album_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16dip"
+        android:textColor="#000000"
+        android:paddingTop="15dip"
+        android:paddingBottom="15dip"
+        android:paddingLeft="10dip"
+        android:textStyle="bold"/>
+ 
+    <!-- Album Songs count -->
+    <TextView android:id="@+id/songs_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:background="#9ed321"
+        android:paddingRight="3dip"
+        android:paddingLeft="3dip"/>
+    
+ 
+</RelativeLayout>
