@@ -45,4 +45,41 @@
 		<windspeed>10 kmph</windspeed>
 		<icon>sunny</icon>
 	</weatherdata>
+	<weatherdata>
+	    <id>6</id>
+		<city>Sydey</city>
+       	<tempc>31°C</tempc>
+       	<tempf>88.6°F</tempf>
+		<condition>Sunny</condition>
+		<windspeed>10 kmph</windspeed>
+		<icon>sunny</icon>
+	</weatherdata>
+	<weatherdata>
+	    <id>7</id>
+		<city>Sydey</city>
+       	<tempc>31°C</tempc>
+       	<tempf>88.6°F</tempf>
+		<condition>Sunny</condition>
+		<windspeed>10 kmph</windspeed>
+		<icon>sunny</icon>
+	</weatherdata>
+	<weatherdata>
+	    <id>8</id>
+		<city>Sydey</city>
+       	<tempc>31°C</tempc>
+       	<tempf>88.6°F</tempf>
+		<condition>Sunny</condition>
+		<windspeed>10 kmph</windspeed>
+		<icon>sunny</icon>
+	</weatherdata>
+	<weatherdata>
+	    <id>9</id>
+		<city>Sydey</city>
+       	<tempc>31°C</tempc>
+       	<tempf>88.6°F</tempf>
+		<condition>Sunny</condition>
+		<windspeed>10 kmph</windspeed>
+		<icon>sunny</icon>
+	</weatherdata>
+	
 </Weather>

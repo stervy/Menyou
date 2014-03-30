@@ -69,8 +69,46 @@ public class SampleActivity extends Activity {
 			for (int i = 0; i < weatherList.getLength(); i++) {
 				 
 				   map = new HashMap<String,String>(); 
-				   
-				   Node firstWeatherNode = weatherList.item(i);
+				 //map.put(KEY_ICON, ((Node)textIconList.item(0)).getNodeValue().trim());
+                   if (index == 0) {
+                   	map.put(KEY_ICON, "first");
+                   	index++;
+                   }
+                   else if (index == 1) {
+                   	map.put(KEY_ICON, "firsthalf");
+                   	index++;
+                   }
+                   else if (index == 2) {
+                   	map.put(KEY_ICON, "second");
+                   	index++;
+                   }
+                   else if (index == 3) {
+                   	map.put(KEY_ICON, "third");
+                   	index++;
+                   }
+                   else if (index == 4) {
+                   	map.put(KEY_ICON, "fourth");
+                   	index++;
+                   }
+                   else if (index == 5) {
+                   	map.put(KEY_ICON, "a1");
+                   	index++;
+                   }
+                   else if (index == 6) {
+                   	map.put(KEY_ICON, "a2");
+                   	index++;
+                   }
+                   else if (index == 7) {
+                   	map.put(KEY_ICON, "a3");
+                   	index++;
+                   }
+                   else if (index == 8) {
+                   	map.put(KEY_ICON, "a4");
+                   	//index++;
+                   }
+                   weatherDataCollection.add(map);
+
+				   /*Node firstWeatherNode = weatherList.item(i);
 				   
 	                if(firstWeatherNode.getNodeType() == Node.ELEMENT_NODE){
 
@@ -117,27 +155,11 @@ public class SampleActivity extends Activity {
 	                    //--city
 	                    
 	                    
-	                    //map.put(KEY_ICON, ((Node)textIconList.item(0)).getNodeValue().trim());
-	                    if (index == 0) {
-	                    	map.put(KEY_ICON, "first");
-	                    	index++;
-	                    }
-	                    else if (index == 1) {
-	                    	map.put(KEY_ICON, "firsthalf");
-	                    	index++;
-	                    }
-	                    else if (index == 2) {
-	                    	map.put(KEY_ICON, "second");
-	                    	index++;
-	                    }
-	                    else if (index == 3) {
-	                    	map.put(KEY_ICON, "third");
-	                    	//index++;
-	                    }
+	                    
 
 	                    //Add to the Arraylist
 	                    weatherDataCollection.add(map);
-				}		
+				}		*/
 			}
 			
 	
@@ -159,7 +181,7 @@ public class SampleActivity extends Activity {
 						int position, long id) {
 
 					Intent i = new Intent();
-					i.setClass(SampleActivity.this, SampleActivity.class);
+					i.setClass(SampleActivity.this, AnotherActivity.class);
 
 					// parameters
 					i.putExtra("position", String.valueOf(position + 1));
@@ -171,10 +193,10 @@ public class SampleActivity extends Activity {
 					 * 4.	Temperature
 					 * 5.	Weather icon   
 					 */
-					i.putExtra("city", weatherDataCollection.get(position).get(KEY_CITY));
-					i.putExtra("weather", weatherDataCollection.get(position).get(KEY_CONDN));
-					i.putExtra("windspeed", weatherDataCollection.get(position).get(KEY_SPEED));
-					i.putExtra("temperature", weatherDataCollection.get(position).get(KEY_TEMP_C));
+					//i.putExtra("city", weatherDataCollection.get(position).get(KEY_CITY));
+					//i.putExtra("weather", weatherDataCollection.get(position).get(KEY_CONDN));
+					//i.putExtra("windspeed", weatherDataCollection.get(position).get(KEY_SPEED));
+					//i.putExtra("temperature", weatherDataCollection.get(position).get(KEY_TEMP_C));
 					//System.out.println(weatherDataCollection.get(position).get(KEY_ICON));
 					i.putExtra("icon", weatherDataCollection.get(position).get(KEY_ICON));
 
