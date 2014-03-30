@@ -65,7 +65,7 @@ public class WeatherActivity extends Activity {
             
 			HashMap<String,String> map = null;
 			
-			for (int i = 0; i < weatherList.getLength(); i++) {
+			for (int i = 0; i < 3; i++) {
 				 
 				   map = new HashMap<String,String>(); 
 				   
@@ -114,8 +114,8 @@ public class WeatherActivity extends Activity {
 	                    Element firstIconElement = (Element)iconList.item(0);
 	                    NodeList textIconList = firstIconElement.getChildNodes();
 	                    //--city
+	                    //map.put(KEY_ICON, ((Node)textIconList.item(0)).getNodeValue().trim());
 	                    map.put(KEY_ICON, ((Node)textIconList.item(0)).getNodeValue().trim());
-	               
 	                    //Add to the Arraylist
 	                    weatherDataCollection.add(map);
 				}		

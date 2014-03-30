@@ -179,9 +179,9 @@ public class AlbumsActivity extends ListActivity {
 					 * */
 					ListAdapter adapter = new SimpleAdapter(
 							AlbumsActivity.this, albumsList,
-							R.layout.list_item_albums, new String[] { TAG_ID,
+							R.layout.list_item_albums, new String[] { "image", TAG_ID,
 									TAG_NAME, TAG_SONGS_COUNT }, new int[] {
-									R.id.album_id, R.id.album_name, R.id.songs_count });
+									R.id.imageView1, R.id.album_id, R.id.album_name, R.id.songs_count });
 					
 					// updating listview
 					setListAdapter(adapter);

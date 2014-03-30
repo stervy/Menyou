@@ -1,36 +1,50 @@
 package vatsag.samples.weatherdisplay;
 
-import vatsag.samples.weatherdisplay.R;
-import android.media.MediaPlayer;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.SimpleAdapter;
 
 public class SampleActivity extends Activity {
-	
-	String position = "1";
-	String city = "";
-	String weather = "";
-	String temperature = "";
-	String windSpeed = "";
-	String iconfile = "";
-	ImageButton imgWeatherIcon;
-	
-	TextView tvcity;
-	TextView tvtemp;
-	TextView tvwindspeed;
-	TextView tvCondition;
-	
+
+	// XML node keys
+    static final String KEY_TAG = "weatherdata"; // parent node
+    static final String KEY_ID = "id";
+    static final String KEY_CITY = "city";
+    static final String KEY_TEMP_C = "tempc";
+    static final String KEY_TEMP_F = "tempf";
+    static final String KEY_CONDN = "condition";
+    static final String KEY_SPEED = "windspeed";
+    static final String KEY_ICON = "icon";
+    int index;
+    
+    // List items 
+    ListView list;
+    BinderData adapter = null;
+    List<HashMap<String,String>> weatherDataCollection;
+  
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,47 +52,147 @@ public class SampleActivity extends Activity {
         
 		try {
 			
-			//handle for the UI elements 
-			imgWeatherIcon = (ImageButton) findViewById(R.id.imageButtonAlpha);
-			//Text fields
-			tvcity = (TextView) findViewById(R.id.textViewCity);
-			tvtemp = (TextView) findViewById(R.id.textViewTemperature);
-			tvwindspeed = (TextView) findViewById(R.id.textViewWindSpeed);
-			tvCondition = (TextView) findViewById(R.id.textViewCondition);
 			
-			// Get position to display
-	        Intent i = getIntent();
+			DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+	        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+	        Document doc = docBuilder.parse (getAssets().open("weatherdata.xml"));
+
+	        weatherDataCollection = new ArrayList<HashMap<String,String>>();
 	        
-	        this.position = i.getStringExtra("position");
-	        this.city = i.getStringExtra("city");
-	        this.weather=	i.getStringExtra("weather");
-	        this.temperature =  i.getStringExtra("temperature");
-	        this.windSpeed =  i.getStringExtra("windspeed");
-	        this.iconfile = i.getStringExtra("icon");
-	        
-	        String uri = "drawable/"+ "d" + iconfile;
-	        int imageBtnResource = getResources().getIdentifier(uri, null, getPackageName());
-		    Drawable dimgbutton = getResources().getDrawable(imageBtnResource);
-		
-		    
-		    //text elements
-		    tvcity.setText(city);
-		    tvtemp.setText(temperature);
-		    tvwindspeed.setText(windSpeed);
-		    tvCondition.setText(weather);
-		    
-		    //thumb_image.setImageDrawable(image);
-		    imgWeatherIcon.setImageDrawable(dimgbutton);
-		
+	        // normalize text representation
+            doc.getDocumentElement ().normalize ();
+	                    
+            NodeList weatherList = doc.getElementsByTagName("weatherdata");
+            
+			HashMap<String,String> map = null;
+			index=0;
+			for (int i = 0; i < weatherList.getLength(); i++) {
+				 
+				   map = new HashMap<String,String>(); 
+				   
+				   Node firstWeatherNode = weatherList.item(i);
+				   
+	                if(firstWeatherNode.getNodeType() == Node.ELEMENT_NODE){
+
+	                    Element firstWeatherElement = (Element)firstWeatherNode;
+	                    //-------
+	                    NodeList idList = firstWeatherElement.getElementsByTagName(KEY_ID);
+	                    Element firstIdElement = (Element)idList.item(0);
+	                    NodeList textIdList = firstIdElement.getChildNodes();
+	                    //--id
+	                    map.put(KEY_ID, ((Node)textIdList.item(0)).getNodeValue().trim());
+	                    
+	                    //2.-------
+	                    NodeList cityList = firstWeatherElement.getElementsByTagName(KEY_CITY);
+	                    Element firstCityElement = (Element)cityList.item(0);
+	                    NodeList textCityList = firstCityElement.getChildNodes();
+	                    //--city
+	                    map.put(KEY_CITY, ((Node)textCityList.item(0)).getNodeValue().trim());
+	                    
+	                    //3.-------
+	                    NodeList tempList = firstWeatherElement.getElementsByTagName(KEY_TEMP_C);
+	                    Element firstTempElement = (Element)tempList.item(0);
+	                    NodeList textTempList = firstTempElement.getChildNodes();
+	                    //--city
+	                    map.put(KEY_TEMP_C, ((Node)textTempList.item(0)).getNodeValue().trim());
+	                    
+	                    //4.-------
+	                    NodeList condList = firstWeatherElement.getElementsByTagName(KEY_CONDN);
+	                    Element firstCondElement = (Element)condList.item(0);
+	                    NodeList textCondList = firstCondElement.getChildNodes();
+	                    //--city
+	                    map.put(KEY_CONDN, ((Node)textCondList.item(0)).getNodeValue().trim());
+	                    
+	                    //5.-------
+	                    NodeList speedList = firstWeatherElement.getElementsByTagName(KEY_SPEED);
+	                    Element firstSpeedElement = (Element)speedList.item(0);
+	                    NodeList textSpeedList = firstSpeedElement.getChildNodes();
+	                    //--city
+	                    map.put(KEY_SPEED, ((Node)textSpeedList.item(0)).getNodeValue().trim());
+	                    
+	                    //6.-------
+	                    NodeList iconList = firstWeatherElement.getElementsByTagName(KEY_ICON);
+	                    Element firstIconElement = (Element)iconList.item(0);
+	                    NodeList textIconList = firstIconElement.getChildNodes();
+	                    //--city
+	                    
+	                    
+	                    //map.put(KEY_ICON, ((Node)textIconList.item(0)).getNodeValue().trim());
+	                    if (index == 0) {
+	                    	map.put(KEY_ICON, "first");
+	                    	index++;
+	                    }
+	                    else if (index == 1) {
+	                    	map.put(KEY_ICON, "firsthalf");
+	                    	index++;
+	                    }
+	                    else if (index == 2) {
+	                    	map.put(KEY_ICON, "second");
+	                    	index++;
+	                    }
+	                    else if (index == 3) {
+	                    	map.put(KEY_ICON, "third");
+	                    	//index++;
+	                    }
+
+	                    //Add to the Arraylist
+	                    weatherDataCollection.add(map);
+				}		
+			}
 			
+	
+			BinderData bindingData = new BinderData(this,weatherDataCollection);
+
+						
+			list = (ListView) findViewById(R.id.list);
+
+			Log.i("BEFORE", "<<------------- Before SetAdapter-------------->>");
+
+			list.setAdapter(bindingData);
+
+			Log.i("AFTER", "<<------------- After SetAdapter-------------->>");
+
+			// Click event for single list row
+			list.setOnItemClickListener(new OnItemClickListener() {
+
+				public void onItemClick(AdapterView<?> parent, View view,
+						int position, long id) {
+
+					Intent i = new Intent();
+					i.setClass(SampleActivity.this, SampleActivity.class);
+
+					// parameters
+					i.putExtra("position", String.valueOf(position + 1));
+					
+					/* selected item parameters
+					 * 1.	City name
+					 * 2.	Weather
+					 * 3.	Wind speed
+					 * 4.	Temperature
+					 * 5.	Weather icon   
+					 */
+					i.putExtra("city", weatherDataCollection.get(position).get(KEY_CITY));
+					i.putExtra("weather", weatherDataCollection.get(position).get(KEY_CONDN));
+					i.putExtra("windspeed", weatherDataCollection.get(position).get(KEY_SPEED));
+					i.putExtra("temperature", weatherDataCollection.get(position).get(KEY_TEMP_C));
+					//System.out.println(weatherDataCollection.get(position).get(KEY_ICON));
+					i.putExtra("icon", weatherDataCollection.get(position).get(KEY_ICON));
+
+					// start the sample activity
+					startActivity(i);
+				}
+			});
+
 		}
 		
+		catch (IOException ex) {
+			Log.e("Error", ex.getMessage());
+		}
 		catch (Exception ex) {
 			Log.e("Error", "Loading exception");
 		}
-		
     }
-	 
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
